@@ -95,5 +95,57 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
+	// recursively search for words in the given board 
+	// r and c arguments are the current position in the board 
+	// dr and dc input rgument set the search direction 
+	// don't change dr or dc while you search, use them to set r and c as you recurse to next pos 
+	// recursivelt build up a word along the direction of search 
+	// insert ONLY the longest word found in result set 
+	// return type of bool should help you insert only the longest word found 
 
+	// sol should be backtracking 
+	// if adding a new letter along search direction does not make the word longer, 
+	// then stop recursion 
+	// you mayyy need to add a word to the result set at this point 
+	// use prefix to see if a string is a prefix of a longer word(s)
+
+	// board is like 2D array of chars 
+	// access: board[x][y]
+
+	// base case: 
+	// reach the end of the board 
+
+	if (r >= board.size() || c >= board.size()){
+		// want to check to make sure we are still in bounds 
+		// return false bc will reach end of board 
+		return false; 
+	}
+
+	word += board[r][c]; 
+	// update the word (after first if statement so it wont crash lol)
+
+	if (prefix.find(word) == prefix.end() && dict.find(word) == dict.end()){
+		// make sure the word is a prefix so it can be longer & exists 
+		// return false if it isn't 
+		// these are conditions to be met for BACKTRACKING APPROACH
+		return false; 
+	}
+
+	if (boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc)){
+		// call recursion 
+		return true; 
+	}
+
+	// if recursion did not return a word that can find more 
+	// so almost termination 
+	if (dict.find(word) != dict.end()){
+		// if the word is a word 
+		result.insert(word);
+		// insert it 
+		return true; 
+		// end 
+	}
+
+	return false; 
+	// not true --> will go back one step & BACKTRACK 
 }
